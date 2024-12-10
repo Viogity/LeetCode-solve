@@ -1,0 +1,71 @@
+#include <iostream>
+#include <string>
+
+//This is a function, that convert strings in arabic numbers.
+int inArabic(char lat)
+{
+	switch (lat)
+	{
+	case 'I':
+		return 1;
+	case 'V':
+		return 5;
+	case 'X':
+		return 10;
+	case 'L':
+		return 50;
+	case 'C':
+		return 100;
+	case 'D':
+		return 500;
+	case 'M':
+		return 1000;
+	}
+	return 0;
+}
+
+// main function
+int main(int argc, char* argv[])
+{
+	// Input number
+	std::string num{ "LVIII" };
+
+	int result{0}, temp{inArabic(num[0])};
+
+	for (int i = 0; i < num.size(); i++)
+	{
+		// If you enter only one symbol
+		if (1 == num.size())
+		{
+			result += temp;
+			break;
+		}
+		// It checks the end of the string
+		if (i+1 == num.size())
+		{
+			result += temp; 
+			break;
+		}
+		// Sum numbers if they have same number inside
+		if (inArabic(num[i]) == inArabic(num[i + 1]))
+		{
+			temp += inArabic(num[i+1]);
+		}
+		// Subtracts less from more
+		if (inArabic(num[i]) < inArabic(num[i + 1]))
+		{
+			result += inArabic(num[i + 1]) - temp;
+			temp = 0;
+		}
+		// temp adds up with the result, and defines a new one
+		if (inArabic(num[i]) > inArabic(num[i + 1]))
+		{
+			result += temp;
+			temp = inArabic(num[i + 1]);
+		}
+	}
+	// Result
+	std::cout << "Сonversion result: " << result << std::endl;
+
+	return 0;
+}
