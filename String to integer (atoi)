@@ -1,0 +1,57 @@
+#include <iostream>
+#include <string>
+
+int main(int argv, char* argc[])
+{
+	std::string s{ "words and 987" };
+
+	for (int i = 0; i < s.size(); i++)
+	{
+		// If the current char is not a number
+		if (s[i] < 48 || s[i] > 57)
+		{
+			// If current char is a minus
+			if (s[i] == 45)
+				continue;
+			// If a current char is a letter
+			else
+			{
+				//s.erase(i, 1);
+				if (i == 0)
+					break;
+				//--i;
+				else
+				{
+					s.resize(i);
+					break;
+				}
+			}
+		}
+		// If the current char is a number.
+		if (s[i] >= 48 && s[i] <= 57)
+		{
+			if (i == 0 || i == s.size())
+				continue;
+			// If the next char is a sign that is located in the middle, 
+			// then complete program and output zero.
+			if ((s[i + 1] == 43 || s[i + 1] == 45))
+			{
+				s.clear();
+				break;
+			}
+			// if the previous char was a minus or plus 
+			// sign and the current number is zero, then erase zero.
+			if ((s[i - 1] == 45 || s[i - 1] == 43) && s[i] == 48)
+			{
+				s.erase(i, 1);
+				--i;
+			}
+		}
+	}
+
+	if (s.empty())
+		s[0] = 0;
+
+	std::cout << std::atoi(s.c_str());
+	return 0;
+}
