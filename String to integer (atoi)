@@ -3,55 +3,54 @@
 
 int main(int argv, char* argc[])
 {
-	std::string s{ "words and 987" };
+	std::string s{ "-99999999999999999999999" };
+	bool ifirst = false;
 
 	for (int i = 0; i < s.size(); i++)
 	{
-		// If the current char is not a number
-		if (s[i] < 48 || s[i] > 57)
+		std::cerr << s << '\t' << s.size() << '\t' << i << std::endl;
+		if (ifirst == true)
 		{
-			// If current char is a minus
-			if (s[i] == 45)
-				continue;
-			// If a current char is a letter
+			--i;
+			ifirst = false;
+		}
+		std::cerr << s << '\t' << s.size() << '\t' << i << std::endl;
+		if (s[i] == 32)
+		{
+			s.erase(i, 1);
+			if (i > 0)
+				--i;
 			else
+				ifirst = true;
+			continue;
+		}
+		else if ((s[i] == 45) || (s[i] == 43))
+		{
+			if (i > 0)
 			{
-				//s.erase(i, 1);
-				if (i == 0)
-					break;
-				//--i;
+				if ((s[i - 1] >= 48) || (s[i - 1] <= 57) && (i > 0))
+				{
+					s.erase();
+					s.resize(1);
+					s[0] = 0;
+				}
 				else
 				{
-					s.resize(i);
-					break;
+					continue;
 				}
 			}
 		}
-		// If the current char is a number.
-		if (s[i] >= 48 && s[i] <= 57)
+		else if ((s[i] < 48) || (s[i] > 57))
 		{
-			if (i == 0 || i == s.size())
-				continue;
-			// If the next char is a sign that is located in the middle, 
-			// then complete program and output zero.
-			if ((s[i + 1] == 43 || s[i + 1] == 45))
+			s.erase(i,s.size());
+			if (s.empty())
 			{
-				s.clear();
-				break;
-			}
-			// if the previous char was a minus or plus 
-			// sign and the current number is zero, then erase zero.
-			if ((s[i - 1] == 45 || s[i - 1] == 43) && s[i] == 48)
-			{
-				s.erase(i, 1);
-				--i;
+				s.resize(1);
+				s[0] = 0;
 			}
 		}
 	}
-
-	if (s.empty())
-		s[0] = 0;
-
-	std::cout << std::atoi(s.c_str());
+	
+	std::cout << std::atoi(s.c_str()) << std::endl;
 	return 0;
 }
